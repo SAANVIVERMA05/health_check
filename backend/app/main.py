@@ -1,5 +1,6 @@
 from fastapi import Depends, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+import os
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
@@ -10,9 +11,12 @@ from .schemas import AssessmentInput, AssessmentResponse, DashboardResponse
 
 Base.metadata.create_all(bind=engine)
 app = FastAPI(title="PulseCheck Stress API", version="1.0.0")
+frontend_origins = [origin.strip() for origin in os.getenv(
+    "FRONTEND_ORIGINS", "http://localhost:5173,http://127.0.0.1:5173,http://localhost:3000"
+).split(",") if origin.strip()]
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://localhost:3000"],
+    allow_origins=frontend_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
