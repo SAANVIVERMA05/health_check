@@ -16,6 +16,8 @@ Prerequisites: Python 3.12+, Node 20+, npm, and Docker.
 1. Start PostgreSQL:
 
    ```bash
+   cp .env.example .env
+   # Replace the YOUR_* values in .env with local values.
    docker compose up -d db
    ```
 
@@ -43,7 +45,7 @@ Prerequisites: Python 3.12+, Node 20+, npm, and Docker.
 
 ### Environment configuration
 
-Copy `.env.example` to `.env` for the shared values, or copy `frontend/.env.example` to `frontend/.env` when configuring the client separately. Set `VITE_API_URL` to the deployed API base URL, including `/api`, before running `npm run build`. Set `DATABASE_URL` in the backend process environment.
+Copy `.env.example` to `.env` for local configuration, or copy `frontend/.env.example` to `frontend/.env` when configuring the client separately. `.env` is ignored by git and must never be committed. Set `VITE_API_URL` to the deployed API base URL, including `/api`, before running `npm run build`. Set `DATABASE_URL` in the backend process environment.
 
 ## API
 
