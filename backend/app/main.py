@@ -23,6 +23,11 @@ app.add_middleware(
 )
 
 
+@app.get("/")
+def root():
+    return {"message": "PulseCheck API is running", "docs": "/docs", "health": "/api/health"}
+
+
 def serialize(assessment: Assessment) -> dict:
     result = {key: getattr(assessment, key) for key in (
         "id", "stress_score", "stress_level", "summary", "created_at",
@@ -38,6 +43,12 @@ def serialize(assessment: Assessment) -> dict:
 @app.get("/api/health")
 def health():
     return {"status": "ok"}
+
+
+@app.get("/api/users")
+def list_users(db: Session = Depends(get_db)):
+    users = db.scalars(select(User).order_by(User.name.asc())).all()
+    return [{"id": user.id, "name": user.name, "email": user.email} for user in users]
 
 
 @app.get("/api/users/{email}/dashboard", response_model=DashboardResponse)
